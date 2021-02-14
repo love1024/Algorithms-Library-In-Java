@@ -7,14 +7,16 @@ package UnionFind;
 public class UnionFind {
     private int[] parent;
     private int[] sizes;
+    private int[] maxEl;
 
     public UnionFind(int N) {
         // Set parent of each element to itself
         // (N array accesses)
         parent = new int[N];
         sizes = new int[N];
+        maxEl = new int[N];
         for (int i=0; i<N; i++) {
-            parent[i] = i;
+            parent[i] = maxEl[i] = i;
             sizes[i] = 1;
         }
     }
@@ -50,13 +52,20 @@ public class UnionFind {
         // If they already under same parent, no need to do anything
         if(p_root == q_root) return;
 
-        // If
+        // If size of p is small, attach it to q, otherwise opposite
         if(sizes[p_root] < sizes[q_root]) {
             this.parent[p_root] = q_root;
             sizes[q_root] += sizes[p_root];
+            maxEl[q_root] = Math.max(maxEl[q_root], maxEl[p_root]);
         } else {
             this.parent[q_root] = p_root;
             sizes[p_root] += sizes[q_root];
+            maxEl[p_root] = Math.max(maxEl[q_root], maxEl[p_root]);
         }
+    }
+
+    public int findMax(int p) {
+        int p_root = this.root(p);
+        return this.maxEl[p_root];
     }
 }

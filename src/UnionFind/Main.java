@@ -23,5 +23,15 @@ public class Main {
         System.out.println(uf.connected(1,8));
         System.out.println(uf.connected(1,9));
         System.out.println(uf.connected(1,0));
+
+
+        //Check maximul element
+        UnionFind uf1 = new UnionFind(10);
+
+        uf1.union(1,2);
+        uf1.union(6,9);
+        uf1.union(2,6);
+
+        System.out.println(uf1.findMax(1));
     }
 }
