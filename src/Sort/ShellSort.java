@@ -1,21 +1,26 @@
 package Sort;
 
-public class InsertionSort {
-
+public class ShellSort {
     public static void exchange(int[] arr, int i, int j) {
         int temp = arr[i];
         arr[i] = arr[j];
         arr[j] = temp;
     }
 
-    public static void sort(int[] arr, int n) {
 
-        for (int i = 1; i < n; i++) {
-            int j = i;
-            while (j > 0 && arr[j] < arr[j-1]) {
-                exchange(arr, j, j-1);
-                j--;
+    public static void sort(int[] arr, int n) {
+        int h = 1;
+        while (h < n/3) h = 3*h + 1;
+
+        while(h >= 1) {
+            for (int i = h; i < n; i++) {
+                int j = i;
+                while (j >= h && arr[j] < arr[j-h]) {
+                    exchange(arr, j, j-h);
+                    j -= h;
+                }
             }
+            h /= 3;
         }
     }
 
