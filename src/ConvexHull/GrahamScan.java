@@ -135,7 +135,7 @@ public class GrahamScan {
             S.push(list.get(i));
         }
 
-        // Print fouund points
+        // Print found points
         while (!S.empty()) {
             Point2d p = S.pop();
             System.out.println("x: " + p.x + " y: " + p.y);
