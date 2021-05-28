@@ -11,7 +11,9 @@ public class QuickSort {
 
     /**
      * Partition the array so that the first element in the
-     * given range is at its appropriate position
+     * given range is at its appropriate position. i.e every element
+     * to the left is either equal or smaller and every element to the
+     * right is either greater or equal
      * @param arr Array to partition
      * @param lo lowest element for current recursion
      * @param hi highest element for current recursion
@@ -51,13 +53,43 @@ public class QuickSort {
         sort(arr, k+1, hi);
     }
 
+    /**
+     * Three way sort by Djakstra which takes into consideration
+     * duplicate keys and sort efficiently for them
+     * @param arr
+     * @param lo
+     * @param hi
+     */
+    public static void ThreeWaySort(int []arr, int lo, int hi) {
+        if(lo >= hi)
+            return;
+
+        int i = lo;
+        int lt = lo;
+        int gt = hi;
+        int p = arr[lo];
+
+        while(i <= gt) {
+            if(arr[i] < p) {
+                exchange(arr, i++, lt++);
+            } else if(arr[i] > p) {
+                exchange(arr, i, gt--);
+            } else {
+                i++;
+            }
+        }
+
+        ThreeWaySort(arr, lo, lt-1);
+        ThreeWaySort(arr, gt+1, hi);
+    }
+
     public static void main(String[] args) {
-        int[] arr = new int[]{5,4,3,2,1};
+        int[] arr = new int[]{2,1,2,5,2};
 
         // Shuffle First so that average complexity will be nlogn
-        KnuthShuffle.shuffle(arr, arr.length);
+        //KnuthShuffle.shuffle(arr, arr.length);
 
-        sort(arr, 0, arr.length-1);
+        ThreeWaySort(arr, 0, arr.length-1);
 
         for (int i = 0; i < arr.length; i++)
             System.out.print(arr[i] + " ");
