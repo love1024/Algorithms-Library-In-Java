@@ -69,6 +69,44 @@ public class LinearDiophantine {
     }
 
     /**
+     * Check if the equation has some positive solution i.e x > 0 && y > 0
+     * @param a a of equation
+     * @param b b of equation
+     * @param c c of equation
+     * @return whether the equation has a positive solution or not
+     */
+    public static boolean havePositiveSolution(int a, int b, int c) {
+        // First find a single solution
+        Solution s = findASolution(a,b,c);
+        if(s == null)
+            return false;
+
+        // If both sign are already positive, then we already have the solution
+        if(s.x > 0 && s.y > 0) return true;
+        else if(s.x < 0 && s.y < 0) return false; // if both are negative, then we cannot make it positive
+        else {
+            // Now, we will shift the negative value of x or y to
+            // just above or equal to 0 and check whether the other
+            // value is still positive, if yes, we found the solution
+            // otherwise, there is no positive solution
+            int g = Euclidean.gcd(a, b);
+            if(s.x < 0) {
+                // Find the count required to make x +ve
+                int cnt = -s.x*g % b > 0 ? (-s.x*g/b + 1) : -s.x*g/b;
+                // Now, shift both x and y using this count
+                shiftSolution(s, a/g, b/g, cnt);
+            } else {
+                int cnt = -1*(-s.y*g % a > 0 ? (-s.y*g/a + 1) : -s.y*g/a);
+                shiftSolution(s, a/g, b/g, cnt);
+            }
+            // If both are +ve, then we have the solution, otherwise
+            // we can't find it, as the other value will keep become negative
+            if(s.x > 0 && s.y > 0) return true;
+            else return false;
+        }
+    }
+
+    /**
      * Shift solutions using given count
      * Note we are shifting using following formula which
      * is used to find multiple solutions after finding
@@ -180,9 +218,9 @@ public class LinearDiophantine {
     }
 
     public static void main(String[] args) {
-        int a = 2;
-        int b = 5;
-        int c = 18;
+        int a = 16;
+        int b = 58;
+        int c = 410;
         Solution s = findASolution(a,b,c);
         if(s != null) {
             System.out.println(a+"*"+s.x+" + " + b+"*"+s.y + " = " + c);
@@ -192,10 +230,10 @@ public class LinearDiophantine {
                 System.out.println("Solution " + (i+1) + " : " + sols[i].x + " " + sols[i].y);
             }
 
-            int minx = -36;
-            int maxx = 15;
-            int miny = -3;
-            int maxy = 20;
+            int minx = 0;
+            int maxx = 50;
+            int miny = 0;
+            int maxy = 50;
             System.out.println("Finding solutions in a range: X:[" + minx+", "+maxx+"] Y:["+miny+", "+maxy+"]");
             Solution[] solsInRange = findSolutionsInRange(a,b,c, minx, maxx, miny, maxy);
             if(solsInRange == null) {
