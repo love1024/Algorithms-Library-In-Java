@@ -1,19 +1,19 @@
 package Array;
 
-public class ResizeableArray {
-    private int[] array;
+public class ResizeableArray<T> {
+    private T[] array;
     private int N = 0;
 
     public ResizeableArray() {
-        this.array = new int[2];
+        this.array = (T[]) new Object[2];
     }
 
     public ResizeableArray(int N) {
-        this.array = new int[2];
+        this.array = (T[]) new Object[N];
     }
 
     // get ith element
-    public int get(int i) {
+    public T get(int i) {
         if(i < 0 || i >= N) {
             throw new ArrayIndexOutOfBoundsException();
         }
@@ -22,7 +22,7 @@ public class ResizeableArray {
     }
 
     // Add element to the array
-    public void push(int el) {
+    public void push(T el) {
         // If array is full, double it
         if(this.N == this.array.length) {
             this.resize(2 * N);
@@ -32,12 +32,12 @@ public class ResizeableArray {
     }
 
     // Remove last element from the array
-    public int pop() {
+    public T pop() {
         if(N < 0) {
             throw new ArrayIndexOutOfBoundsException();
         }
 
-        int item = this.array[--this.N];
+        T item = this.array[--this.N];
         // Resize array to half, if one 3/4 is empty
         if(this.N > 0 && this.N == this.array.length / 4) {
             this.resize(this.array.length / 2);
@@ -48,7 +48,7 @@ public class ResizeableArray {
 
     // Resize array to a given size
     private void resize(int size) {
-        int[] newArray = new int[size];
+        T[] newArray = (T[]) new Object[size];
         for(int i = 0; i < N; i++) {
             newArray[i] = this.array[i];
         }
@@ -57,7 +57,7 @@ public class ResizeableArray {
     }
 
     public static void main(String[] args) {
-        ResizeableArray arr = new ResizeableArray();
+        ResizeableArray<Integer> arr = new ResizeableArray<>();
         arr.push(1);
         arr.push(2);
         arr.push(3);
